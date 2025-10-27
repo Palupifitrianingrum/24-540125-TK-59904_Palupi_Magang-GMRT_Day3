@@ -1,0 +1,57 @@
+LINK WOKWI
+https://wokwi.com/projects/445933516953391105
+LINK VIDEO
+https://drive.google.com/file/d/1DjSpny2sSBLqxpjlvAT0SNo4-kt7zM6A/view?usp=sharing
+[OPSIONAL, TAMBAHAN NILAI] Jawablah pertanyaan berikut dan rekap ke dalam
+satu file PDF (Extra_Jawaban.pdf):
+a. Apakah perbedaan open-loop system dan close-loop system?
+Perbedaannya terdapat pada feedback, klo open itu setelah sistem on ya bekerja ga peduli apapun. Tapi klo closed itu dia ada feedbacknya, jadi meski udah on mereka tetep menyesuaikan sama kondisi. Misal yg open itu blender dinyalain dia ga peduli buahnya udah hancur, halus dan diberhentiin dengan pencet tombol off. Klo dibikin closed, setelah halus dia mati sendiri.
+b. Apakah sistem yang anda kerjakan dan simulasikan di atas termasuk open-loop
+system atau close-loop system? Justifikasi jawaban anda!
+Closed, karena pakai sensor yang berfungsi buat menangkap sinyal, misal yg pir buat deteksi gerakan manusia atau benda, klo hasilnya high otomatis akan menggerakkan servo. MPU6050 klo gerak, rotasi, muter2 itu bakalan ngasih sinyal dan servo bakalan muter sesuai pergerakan MPU6050.Servo yang bergerak karena sensor itu yg dinamakan feedback sehingga rangkaian ini termasuk closed loop system.
+c. Jelaskan fungsi masing-masing sensor yang digunakan pada sistem di atas!
+MPU6050 = buat deteksi pergerakan dengan accelerometer dan gyroscop serta ukur suhu, yang dignakan di rangkaian adalah gyroscope nya, ibarat kepala bisa geleng-geleng, ngangguk2, dan juga miring/tengeng, jika terdeteksi pergerakan seperti itu maka servo akan bergerak sesuai arah pergerakan MPU6050
+PIR = buat deteksi di sekitar sensor itu ada manusia atau benda atau sesuatu yang gerak ga, klo ada sinyal bakal high dan servo akan bergerak, klo ga ada bakal low dan ya ga gerak servonya.
+
+d. Jelaskan alasan, fungsi, dan arah tuju koneksi setiap pin ESP32 yang
+dimanfaatkan dari skematik (poin 5 Informasi Pengerjaan) yang telah anda buat!
+
+GND (ground) = jalan pulang electron, klo ga disambungin ke tempat yang smaa ga bisa komunikasi
+5V = daya untuk servo dan PIR
+3.3V =  daya untuk MPU6050 
+GPIO 18, 17, 19, 32, 33 = I/O untuk servo 
+GPIO 16 = I/O untuk PIR
+GPIO 21 = buat nyambungin ke sda yang menerima dan mngirim data
+GPIO 22 = buat nyambungin ke scc buat komunikasi dan sinkronisasi
+
+e. Dalam suatu rapat monitoring, anda diminta untuk menjelaskan kode yang anda
+buat ke rekan kerja tim anda yang berbeda divisi dengan anda. Buatlah penjelasan
+yang mudah dipahami untuk menjelaskan alur bagaimana sistem yang anda
+program bekerja berdasarkan eksekusi kode yang telah dibuat hingga ke eksekusi
+yang dilakukan oleh mikrokontroler, sensor, dan aktuator yang ada!
+//definisikan dulu pin2 servonya
+//definisi buat intial position
+//deteksi motion
+//intial lib nya
+//set initial condition untuk yaw
+//setup pin2 mpu, servo, and pir
+//setup per-sinyalan pir
+//klo pip nangkep pergerakan sinyal, ada perubahan, maka servo akan gerak 45
+  //klo udah y delay 1 s, terus balik ke initial condition
+ //nah, klo ai pir kgk ada inputan nih, cek empu
+  //for the first, roll. nilai roll nya didapat dgn deteksi rotasi dari empu
+  //klo nilai rotasi di koordinat x lebih dr thresh yg udh di tetapin, gerak sebesar derajat yg udh ditetapin posb
+  //klo kurang, celk dulu nilai rotasinya kurang dari minus threshnya ga, klo kurang y gerak sebesar pos a
+  // klo lebih dari minus thresh, balik ke initial position
+  //second, untuk pitchnya sama kek roll yak!!!
+  //third, bagian yaw nya itu pertama ngecek nilainya lebih dari thresh ga, pake abs karena buat ngecek gerak ga nya
+  //klo nilai gyronya positif y gerak ke posa, negatif ke posb
+  //yaw nya di true in soale dah gerak
+  //yawt nya = 0
+  //lanjut ke yg else, ada 2 kondisi
+  //klo sebelum e yaw dah gerak terus yawt nya 0, yawt dikasih inputan milis
+  //terus yg kedua, klo belum gerak, atau sebelumnya udah gerak tapi udah lebih dari 1 detik dari gerakan terakhir ga gerak2, maka servo bakal gerak ke ipos
+  //inisial ulang, yaw false terus yawt 0
+  //delay per loop yg paling bawah 50 ms
+
+
